@@ -6,23 +6,26 @@ function Board() {
 }
 
 Board.prototype.initLightGrid = function(){
-  this.createEmptyGrid();
-  this.fillLightGrid();
+  var grid = this.createEmptyGrid(this.width, this.width);
+  this.lightGrid = this.fillLightGrid(grid);
 };
 
-Board.prototype.fillLightGrid = function() {
+Board.prototype.fillLightGrid = function(grid) {
+  var grid = grid;
   for(var i = 0; i < this.width; i++){
     for(var j = 0; j < this.width; j++){
-      this.lightGrid[i][j] = new Light(i, j, this);
+      grid[i][j] = new Light(i, j, this);
     }
   }
+  return grid;
 }
 
-Board.prototype.createEmptyGrid = function() {
-  this.lightGrid = new Array(this.width);
-  for(var i = 0; i < this.width; i++){
-    this.lightGrid[i] = new Array(this.width);
+Board.prototype.createEmptyGrid = function(width, height) {
+  var grid = new Array(width);
+  for(var i = 0; i < width; i++){
+    grid[i] = new Array(height);
   }
+  return grid;
 }
 
 Board.prototype.onBoard = function(x,y){
