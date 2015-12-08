@@ -1,11 +1,5 @@
-
 function main(){
-  
-
-  board = new Board();
+  game = new Game();
 }
 
 $(document).ready(main);
-
-
-
