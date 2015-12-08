@@ -2,7 +2,6 @@ function Board() {
   this.width = 5;
   this.element = $('.board');
   this.initLightGrid();
-
 }
 
 Board.prototype.initLightGrid = function(){
