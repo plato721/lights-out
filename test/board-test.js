@@ -29,16 +29,12 @@ describe('Creating a new board', () => {
   });
 
   it("can be initialized with a level", () => {
-    let levels = new Levels();
+    var levels = new Levels();
     let board = new Board(levels.list[0]);
-    console.log(levels.list[0]);
 
     assert.isFalse(board.lightGrid[0][0].lit);
     assert(board.lightGrid[1][0].lit);
   });
 
-  // it("can be initialized with a different level", () => {
-    
-  // });
-
 });
+
