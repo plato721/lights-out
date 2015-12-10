@@ -51,4 +51,10 @@ describe('Light', function(){
     assert.include(light.template(), "lit")
   });
 
+  it("can be initialized as lit", function() {
+    let light = new Light(3, 4, this.board, true);
+
+    assert(light.lit);
+  });
+
 });
