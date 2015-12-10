@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 var Board = require('../lib/board.js');
 var Light = require('../lib/light.js');
+var Levels = require('../lib/levels.js');
 
 describe('Creating a new board', () => {
 
@@ -26,7 +27,16 @@ describe('Creating a new board', () => {
       }
     }
   });
+
+  it("can be initialized with a level", () => {
+    var levels = new Levels();
+    let board = new Board(levels.list[0]);
+
+    assert.isFalse(board.lightGrid[0][0].lit);
+    assert(board.lightGrid[1][0].lit);
+  });
 });
+
 
 // describe("updating board", () => {
 
