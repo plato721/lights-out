@@ -30,4 +30,14 @@ describe('Levels', function() {
       assert.equal(expected[idx], this.level1[idx]);
     }
   });
+
+  it('generates a random level', function() {
+    var levels = new Levels();
+    var random = levels.random();
+    console.log(random);
+
+    for(var i = 0; i < 5; i++) {
+      assert.match(random[parseInt(i)], /[01]{5}/)
+    }
+  });
 });
