@@ -16,4 +16,10 @@ describe('Score', function() {
 
     assert.equal(score.moves, 1);
   });
+
+  it("has a number of points", function() {
+    var score = new Score();
+
+    assert.match(score.points, /\d/);
+  });
 });
