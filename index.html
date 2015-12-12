@@ -3,25 +3,25 @@
 <head>
   <meta charset="utf-8">
   <title>Lights Out</title>
+  <link href='https://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
   <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <body>
   <div class="main">
 
-<div class="form-group">
-  <select class="form-control" id="level">
-    <option class='level-choice' selected value="1">Level 1</option>
-    <option class='level-choice' value='2'>Level 2</option>
-    <option class='level-choice' value='3'>Level 3</option>
-    <option class='level-choice' value='4'>Level 4</option>
-    <option class='level-choice' value='5'>Level 5</option>
-    <option class='level-choice' value='random'>Random</option>
-  </select>
-</div>
-<div class="score">
-</div>
+    <div class="menu">
+      <ul id="levels">
+        <li class="level hvr-grow" selected value="1">Level 1</li>
+        <li class="level hvr-grow" value='2'>Level 2</li>
+        <li class="level hvr-grow" value='3'>Level 3</li>
+        <li class="level hvr-grow" value='4'>Level 4</li>
+        <li class="level hvr-grow" value='5'>Level 5</li>
+        <li class="level hvr-grow" value='random'>Random</li>
+      </ul>
+    </div>
 
+    <div class="score"></div>
     <div class='board'></div>
   </div>
 
