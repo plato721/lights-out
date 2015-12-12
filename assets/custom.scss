@@ -42,8 +42,8 @@
   }
 
 
-/* Desktop or large tablet */
-@media (min-width: 800px) {
+/* Bigger than a phone */
+@media (min-width: 481px) {
   .board{
     display: block;
     height: 500px;
@@ -66,19 +66,31 @@
     width: 100px;
   }
 
-  .lit{
-    background-color: yellow;
-  }
-}
-
-/* Landscape phone to portrait tablet */
-@media (max-width: 768px) {
-
-
 }
 
 /* Landscape phones and down */
 @media (max-width: 480px) {
+    .board{
+    display: block;
+    height: 250px;
+    width: 250px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    margin: -150px 0 25px -125px;
+  }
+
+  .cell{
+    height: 50px;
+    width: 50px;
+  }
+
+  .light{
+    height: 50px;
+    width: 50px;
+  }
 
 }
 
