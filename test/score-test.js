@@ -22,4 +22,13 @@ describe('Score', function() {
 
     assert.match(score.points, /\d/);
   });
+
+  it("decrements points as moves increase", function() {
+    var score = new Score();
+
+    var initialPoints = score.points;
+    score.incrementMoves();
+
+    assert.isAbove(initialPoints, score.points);
+  });
 });
