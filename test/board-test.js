@@ -77,6 +77,34 @@ describe('Creating a new board', () => {
     var result = board.coordsAbove([x, y]);
     assert(arraysAreEqual(result, [x, y - 1]));
   });
+
+  it("knows if coords are off board to left", function() {
+    var board = new Board();
+    var x = -1, y = 0;
+
+    assert.isFalse(board.onBoard(x, y));
+  });
+
+  it("knows if coords are off board to right", function() {
+    var board = new Board();
+    var x = 5, y = 0;
+
+    assert.isFalse(board.onBoard(x, y));
+  });
+
+  it("knows if coords are off board below", function() {
+    var board = new Board();
+    var x = 0, y = 5;
+
+    assert.isFalse(board.onBoard(x, y));
+  });
+
+  it("knows if coords are off board above", function() {
+    var board = new Board();
+    var x = 0, y = -1;
+
+    assert.isFalse(board.onBoard(x, y));
+  });
 });
 
 
