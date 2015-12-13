@@ -7,6 +7,12 @@ var Light = require('../lib/light.js');
 var Levels = require('../lib/levels.js');
 
 describe('Creating a new board', () => {
+  function arraysAreEqual(a, b) {
+    for(var i = 0; i < a.length; i++){
+      if(a[i] !== b[i]) return false;
+    }
+    return true;
+  }
 
   it("has a set width", () => {
     let board = new Board();
@@ -34,6 +40,42 @@ describe('Creating a new board', () => {
 
     assert.isFalse(board.lightGrid[0][0].lit);
     assert(board.lightGrid[1][0].lit);
+    assert.isFalse(board.lightGrid[2][0].lit);
+    assert(board.lightGrid[0][1].lit);
+    assert.isFalse(board.lightGrid[0][2].lit);
+    assert(board.lightGrid[1][2].lit);
+  });
+
+  it("knows left neighbor coords for coords", function() {
+    var board = new Board();
+    var x = 1, y = 1;
+
+    var result = board.coordsLeft([x, y]);
+    assert(arraysAreEqual(result, [x - 1, y]));
+  });
+
+  it("knows right neighbor coords for coords", function() {
+    var board = new Board();
+    var x = 1, y = 1;
+
+    var result = board.coordsRight([x, y]);
+    assert(arraysAreEqual(result, [x + 1, y]));
+  });
+
+  it("knows coords below given coords", function() {
+    var board = new Board();
+    var x = 1, y = 1;
+
+    var result = board.coordsBelow([x, y]);
+    assert(arraysAreEqual(result, [x, y + 1]));
+  });
+
+  it("knows coords above given coords", function() {
+    var board = new Board();
+    var x = 1, y = 1;
+
+    var result = board.coordsAbove([x, y]);
+    assert(arraysAreEqual(result, [x, y - 1]));
   });
 });
 
