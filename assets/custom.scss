@@ -1,64 +1,127 @@
-  html {
-    height: 100%;
-  }
-  body {
-    height: 100%;
-  }
+html {
+  height: 100%;
+}
+body {
+  background-image: url('http://wallpaperbeta.com/wallpaper_3840x2160/imperial_flag_the_russian_empire_textures_ultra_3840x2160_hd-wallpaper-394967.jpg');
+  height: 100%;
+  font-family: 'Play', sans-serif;
+}
 
-  div{
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
-  }
+div{
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
 
-  * {
+* {
   margin: 0;
   padding: 0;
-  }
+}
 
-  .main {
-    height: 100%;
-    width: 100%;
-    display: block;
-    position: relative;
-  }
+.main {
+  height: 100%;
+  width: 100%;
+  display: block;
+  position: relative;
+}
 
-  .cell{
-    vertical-align: top;
-    display: inline-block;
-    border: 1px solid black;
-    background-color: grey;
-  }
+.cell{
+  vertical-align: top;
+  display: inline-block;
+}
 
-  .light{
-    background-color: black;
-    display: inline-block;
-    border-radius: 100%;
-    border: 1px solid black;
-  }
+.light{
+  background-color: #1A1301;
+  // opacity: 0.7;
+  display: inline-block;
+  border-radius: 10px;
+}
 
-  .lit{
-    background-color: yellow;
-  }
+.light:hover,
+.light:focus,
+.light:active {
+  // box-shadow: 0 0 8px rgba(255, 211, 00, 0.9);
+  box-shadow: 0 0 5px #fff, 0 0 10px #ff0;
+}
+
+.hvr-grow {
+  vertical-align: middle;
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+  transform: scale(1.1);
+}
+
+
+.lit{
+  background-color: #FFF;
+  opacity: none;
+  box-shadow: 0 0 10px #fff, 0 0 20px #ff0;
+}
+
+.menu {
+  float: left;
+  margin: 180px 0 0 50px;
+  font-size: 30px;
+  color: #FFF;
+}
+
+.menu li {
+  cursor: pointer;
+  list-style-type: none;
+  padding: 2px 230px 2px 25px;
+  text-shadow: 0 0 10px #fff, 0 0 20px #ff0;
+}
+
+.menu li:hover {
+  border: 1px solid #FFF;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #fff, 0 0 20px #ff0;
+}
+
+.title {
+  text-align: center;
+}
+
+.title h1 {
+  font-size: 100px;
+  font-weight: bold;
+}
+
+.score {
+  float: right;
+  color: white;
+  color: #FFF;
+  text-shadow: 0 0 10px #fff, 0 0 20px #ff0;
+  margin: 180px 100px 0 0;
+}
 
 
 /* Bigger than a phone */
 @media (min-width: 481px) {
   .board{
     display: block;
-    height: 500px;
-    width: 500px;
+    height: 550px;
+    width: 550px;
 
     position: absolute;
     top: 50%;
     left: 50%;
 
-    margin: -150px 0 50px -250px;
+    margin: -190px 0 50px -270px;
   }
 
   .cell{
-    height: 100px;
-    width: 100px;
+    height: 110px;
+    width: 110px;
   }
 
   .light{
@@ -101,3 +164,88 @@
 // @media (min-width: 768px) and (max-width: 980px) { ... }
 
 
+@-moz-keyframes neonglow {
+    20%, 70% {
+        color: rgba(0, 0, 0, 0.1);
+        text-shadow: none;
+    }
+    25%, 50%, 75%, 95% {
+        color: #fff;
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0;
+    }
+    55% {
+        color: #222;
+        text-shadow: none;
+    }
+}
+@-moz-keyframes ontheblink {
+    21%, 39%, 45%, 47%, 53% {
+        color: rgba(0, 0, 0, 0.1);
+        text-shadow: none;
+    }
+    26%, 38%, 40%, 44%, 46%, 48% {
+        color: #fff;
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0;
+    }
+}
+@-ms-keyframes neonglow {
+    20%, 70% {
+        color: rgba(0, 0, 0, 0.1);
+        text-shadow: none;
+    }
+    25%, 50%, 75%, 95% {
+        color: #fff;
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0;
+    }
+    55% {
+        color: #222;
+        text-shadow: none;
+    }
+}
+@-ms-keyframes ontheblink {
+    21%, 39%, 45%, 47%, 53% {
+        color: rgba(0, 0, 0, 0.1);
+        text-shadow: none;
+    }
+    26%, 38%, 40%, 44%, 46%, 48% {
+        color: #fff;
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0;
+    }
+}
+@-webkit-keyframes neonglow {
+    20%, 70% {
+        color: rgba(0, 0, 0, 0.1);
+        text-shadow: none;
+    }
+    25%, 50%, 75%, 95% {
+        color: #fff;
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0;
+    }
+    55% {
+        color: #222;
+        text-shadow: none;
+    }
+}
+@-webkit-keyframes ontheblink {
+    21%, 39%, 45%, 47%, 53% {
+        color: rgba(0, 0, 0, 0.1);
+        text-shadow: none;
+    }
+    26%, 38%, 40%, 44%, 46%, 48% {
+        color: #fff;
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff0, 0 0 30px #ff0;
+    }
+}
+
+
+span {
+    -moz-animation: neonglow 10s infinite;
+    -ms-animation: neonglow 10s infinite;
+    -webkit-animation: neonglow 10s infinite;
+    color: rgba(0, 0, 0, 0.1);
+}
+.out {
+    -moz-animation: ontheblink 10s infinite;
+    -ms-animation: ontheblink 10s infinite;
+    -webkit-animation: ontheblink 10s infinite;
+}
