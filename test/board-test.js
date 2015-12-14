@@ -105,4 +105,18 @@ describe('Creating a new board', () => {
 
     assert.isFalse(board.onBoard(x, y));
   });
+
+  it("gets back set of raw neighbor coordinates", function() {
+    var board = new Board();
+    var x = 1, y = 1;
+
+    assert.equal(board.rawNeighborCoords(x, y).length, 4);
+  });
+
+  it("gets back set of neighbor coords", function() {
+    var board = new Board();
+    var x = 1, y = 1;
+
+    assert.equal(board.neighborCoords(1, 1).length, 4);
+  });
 });
