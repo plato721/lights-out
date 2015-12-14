@@ -139,5 +139,103 @@ describe('NextMove', function() {
     assert(arraysAreEqual([1,0], result));
   });
 
+  it("knows first move for end game for 01010", function() {
+    var level = {
+      "0" : "00000",
+      "1" : "00000",
+      "2" : "00000",
+      "3" : "00000",
+      "4" : "01010"
+    };
+
+    var board = new Board(level);
+    var result = this.nextMove.forBoard(board);
+
+    assert(arraysAreEqual([0,0], result));
+  });
+
+  it("knows second move for end game for 01010", function() {
+    var level = {
+      "0" : "11000",
+      "1" : "10000",
+      "2" : "00000",
+      "3" : "00000",
+      "4" : "01010"
+    };
+    var board = new Board(level);
+    var result = this.nextMove.forBoard(board);
+
+    assert(arraysAreEqual([3,0], result));
+  });
+
+  it("knows move for end game for 11100", function() {
+    var level = {
+      "0" : "00000",
+      "1" : "00000",
+      "2" : "00000",
+      "3" : "00000",
+      "4" : "11100"
+    };
+    var board = new Board(level);
+    var result = this.nextMove.forBoard(board);
+
+    assert(arraysAreEqual([1,0], result));
+  });
+
+  it("knows move for end game for 00111", function() {
+    var level = {
+      "0" : "00000",
+      "1" : "00000",
+      "2" : "00000",
+      "3" : "00000",
+      "4" : "00111"
+    };
+    var board = new Board(level);
+    var result = this.nextMove.forBoard(board);
+
+    assert(arraysAreEqual([3,0], result));
+  });
+
+  it("knows move for end game for 10110", function() {
+    var level = {
+      "0" : "00000",
+      "1" : "00000",
+      "2" : "00000",
+      "3" : "00000",
+      "4" : "10110"
+    };
+    var board = new Board(level);
+    var result = this.nextMove.forBoard(board);
+
+    assert(arraysAreEqual([4,0], result));
+  });
+
+  it("knows move for end game for 01101", function() {
+    var level = {
+      "0" : "00000",
+      "1" : "00000",
+      "2" : "00000",
+      "3" : "00000",
+      "4" : "01101"
+    };
+    var board = new Board(level);
+    var result = this.nextMove.forBoard(board);
+
+    assert(arraysAreEqual([0,0], result));
+  });
+
+  it("knows move for end game for 11011", function() {
+    var level = {
+      "0" : "00000",
+      "1" : "00000",
+      "2" : "00000",
+      "3" : "00000",
+      "4" : "11011"
+    };
+    var board = new Board(level);
+    var result = this.nextMove.forBoard(board);
+
+    assert(arraysAreEqual([2,0], result));
+  });
 
 });
