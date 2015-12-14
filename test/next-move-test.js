@@ -28,7 +28,7 @@ describe('NextMove', function() {
     var board = new Board(level);
 
     var expected = [0, 0];
-    var result = this.nextMove.upperLeftMost(board.lightGrid);
+    var result = this.nextMove.upperLeftLit(board.lightGrid);
 
     assert(board.lightGrid[0][0].lit);
     assert(arraysAreEqual(expected, result));
@@ -46,7 +46,7 @@ describe('NextMove', function() {
     var board = new Board(level);
 
     var expected = [1, 0];
-    var result = this.nextMove.upperLeftMost(board.lightGrid);
+    var result = this.nextMove.upperLeftLit(board.lightGrid);
 
     assert(board.lightGrid[1][0].lit);
     assert(arraysAreEqual(expected, result));
@@ -65,7 +65,7 @@ describe('NextMove', function() {
     var board = new Board(level);
 
     var expected = [0, 1];
-    var result = this.nextMove.upperLeftMost(board.lightGrid);
+    var result = this.nextMove.upperLeftLit(board.lightGrid);
     assert(arraysAreEqual(expected, result));
   });
 
