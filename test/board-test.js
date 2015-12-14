@@ -64,7 +64,7 @@ describe('Creating a new board', () => {
 
   it("knows coords below given coords", function() {
     var board = new Board();
-    var x = 1, y = 1;
+    var x = 2, y = 0;
 
     var result = board.coordsBelow([x, y]);
     assert(arraysAreEqual(result, [x, y + 1]));
