@@ -119,4 +119,19 @@ describe('Creating a new board', () => {
 
     assert.equal(board.neighborCoords(1, 1).length, 4);
   });
+
+  it("holds as equal two boards with the same coordinates of lit lights", 
+    function(){
+      var level = {
+        "0" : "10000",
+        "1" : "01000",
+        "2" : "00100",
+        "3" : "00010",
+        "4" : "00001"
+      };
+
+      var board = new Board(level);
+      var board_2 = new Board(level);
+      assert(board.equals(board_2));
+  });
 });
