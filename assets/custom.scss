@@ -1,10 +1,10 @@
 html {
-  height: 90%;
+  height: 100%;
   width: 100%;
 }
 body {
   background-image: url('http://wallpaperbeta.com/wallpaper_3840x2160/imperial_flag_the_russian_empire_textures_ultra_3840x2160_hd-wallpaper-394967.jpg');
-  height: 90%;
+  height: 100%;
   width: 100%;
   font-family: 'Play', sans-serif;
 }
@@ -68,9 +68,10 @@ div{
 
 .menu {
   float: left;
-  margin-top: 11.11111111%; /* 120px/1080px */
-  margin-left: 05.555555556%; /* 50px/1080px */
-  width: 21.2962963%; /* 230px/1080px */
+  left: 5%;
+  margin-top: 10%; /* 120px/1080px */
+  margin-left: 6%; /* 50px/1080px */
+  width: 22%; /* 230px/1080px */
   font-size: 3em;
   color: #FFF;
 }
@@ -93,17 +94,22 @@ div{
 }
 
 .title h1 {
-  font-size: 100px;
+  font-size: 8em;
   font-weight: bold;
 }
 
 .score {
   float: right;
-  width: 21.2962963%; /* 230px/1080px */
+  position: absolute;
+  right: 5%;
+  font-size: 1.2em;
+  text-align: right;
+  width: 22%; /* 230px/1080px */
   color: white;
   color: #FFF;
   text-shadow: 0 0 5px #fff, 0 0 10px #ff0;
-  margin-top: 11.11111111%; /* 120px/1080px */
+  margin-top: 10%; /* 120px/1080px */
+  // margin-right: 7%; /* 50px/1080px */
 }
 
 
@@ -111,24 +117,24 @@ div{
 @media (min-width: 481px) {
   .board{
     display: block;
-    height: 550px;
-    width: 550px;
+    height: 500px;
+    width: 500px;
 
     position: absolute;
-    top: 50%;
-    left: 50%;
-
-    margin: -190px 0 50px -270px;
+    top: 30%;
+    left: 33%;
+    // margin-top: 2%;
+    // margin-left: 31%;
   }
 
   .cell{
-    height: 110px;
-    width: 110px;
+    height: 100px;
+    width: 100px;
   }
 
   .light{
-    height: 100px;
-    width: 100px;
+    height: 93px;
+    width: 93px;
   }
 
 }
@@ -144,7 +150,9 @@ div{
     top: 50%;
     left: 50%;
 
-    margin: -150px 0 25px -125px;
+
+    margin-top: -9%;
+    margin-left: -18.45%;
   }
 
   .cell{
