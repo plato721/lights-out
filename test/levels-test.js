@@ -40,4 +40,22 @@ describe('Levels', function() {
       assert.match(random[parseInt(i)], /[01]{5}/)
     }
   });
+
+  it('can check for equality of levels', function() {
+    var levels = new Levels();
+    var level = levels.list[0];
+    var same_level = levels.list[0];
+
+    assert(levels.areEqual(level, same_level),
+      "These levels should be equal but are not");
+  });
+
+  it('knows if levels are not equal', function() {
+    var levels = new Levels();
+    var level = levels.list[1];
+    var different = levels.list[2];
+
+    assert.isFalse(levels.areEqual(level, different),
+      "These levels should not be equal");
+  });
 });
