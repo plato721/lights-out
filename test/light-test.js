@@ -42,15 +42,6 @@ describe('Light', function(){
     assert(light.lit);
   });
 
-  it("template includes class lit when lit and vice versa", function() {
-    let light = new Light(3, 4, this.board);
-
-    assert.isFalse(light.lit);
-    assert.notInclude(light.template(), "lit")
-    light.flipSwitch();
-    assert.include(light.template(), "lit")
-  });
-
   it("can be initialized as lit", function() {
     let light = new Light(3, 4, this.board, true);
 
