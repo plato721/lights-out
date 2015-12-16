@@ -64,6 +64,20 @@ describe('leaderboard', function() {
     assert(this.lb.isTopScore(this.score_two));
   });
 
+  it("prunes the list if adding to a full list", function() {
+    this.lb.addScore(this.name_three, this.score_three);
+    this.lb.addScore(this.name_one, this.score_one);
+    this.lb.addScore(this.name_two, this.score_two);
+    this.lb.addScore(this.name_three, this.score_three);
+    this.lb.addScore(this.name_one, this.score_one);
+
+    this.score_one.points = 51;
+    this.lb.addScore(this.name_one, this.score_one);
+
+    assert.equal(this.lb.topScores.length, 5);
+    assert.equal(this.lb.topScores[0][1], 51);
+  });
+
 
 
 
