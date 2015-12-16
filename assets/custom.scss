@@ -82,6 +82,12 @@ div{
   font-size: 1.5em;
 }
 
+.hint:hover {
+  cursor: pointer;
+  text-shadow: 0 0 10px #fff, 0 0 20px #ff0;
+  padding-left: 3%;
+}
+
 .leaderboard {
   font-size: 2em;
   margin-top: 25%;
@@ -209,6 +215,11 @@ div{
 .lit:active {
   box-shadow: inset 0 0 15px 10px #fff, inset 0 0 20px 5px #000;
 }
+
+.next-move {
+  background-color: red;
+}
+
 
 /* Bigger than a phone */
 @media (min-width: 481px) {
