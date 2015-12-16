@@ -6,35 +6,46 @@ var Score = require('../lib/score');
 var utils = require('../lib/utils');
 
 describe('leaderboard', function() {
+  before(function() {
+    this.name_one = "John";
+    this.score_one = new Score();
+    this.score_one.points = 50;
+
+    this.name_two = "Mary";
+    this.score_two = new Score();
+    this.score_two.points = 25;
+
+    this.name_three = "Beth";
+    this.score_three = new Score();
+    this.score_three.points = 35;
+  });
+
   it("adds a name and a score to a list", function() {
     var lb = new Leaderboard();
     var score = new Score();
 
     lb.addScore('matty', score);
-    assert(utils.arraysAreEqual(lb.allScores[0], ['matty', score.points]));
+    assert(utils.arraysAreEqual(lb.topScores[0], ['matty', score.points]));
   });
 
   it("adds multiple scores in descending order", function() {
     var lb = new Leaderboard();
 
-    var name_one = "John";
-    var score_one = new Score();
-    score_one.points = 50;
+    lb.addScore(this.name_three, this.score_three);
+    lb.addScore(this.name_one, this.score_one);
+    lb.addScore(this.name_two, this.score_two);
 
-    var name_two = "Mary";
-    var score_two = new Score();
-    score_two.points = 25;
-
-    var name_three = "Beth";
-    var score_three = new Score();
-    score_three.points = 35;
-
-    lb.addScore(name_three, score_three);
-    lb.addScore(name_one, score_one);
-    lb.addScore(name_two, score_two);
-
-    assert.equal(lb.allScores[0][0], name_one);
-    assert.equal(lb.allScores[1][0], name_three);
-    assert.equal(lb.allScores[2][0], name_two);
+    assert.equal(lb.topScores[0][0], this.name_one);
+    assert.equal(lb.topScores[1][0], this.name_three);
+    assert.equal(lb.topScores[2][0], this.name_two);
   });
+
+  it("returns top x scores", function() {
+
+
+
+  });
+
+
+
 });
