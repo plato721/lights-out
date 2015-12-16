@@ -6,7 +6,7 @@ var Score = require('../lib/score');
 var utils = require('../lib/utils');
 
 describe('leaderboard', function() {
-  before(function() {
+  beforeEach(function() {
     this.name_one = "John";
     this.score_one = new Score();
     this.score_one.points = 50;
@@ -18,33 +18,52 @@ describe('leaderboard', function() {
     this.name_three = "Beth";
     this.score_three = new Score();
     this.score_three.points = 35;
-  });
 
-  it("adds a name and a score to a list", function() {
-    var lb = new Leaderboard();
-    var score = new Score();
-
-    lb.addScore('matty', score);
-    assert(utils.arraysAreEqual(lb.topScores[0], ['matty', score.points]));
+    this.lb = new Leaderboard();
   });
 
   it("adds multiple scores in descending order", function() {
-    var lb = new Leaderboard();
+    this.lb.addScore(this.name_three, this.score_three);
+    this.lb.addScore(this.name_one, this.score_one);
+    this.lb.addScore(this.name_two, this.score_two);
 
-    lb.addScore(this.name_three, this.score_three);
-    lb.addScore(this.name_one, this.score_one);
-    lb.addScore(this.name_two, this.score_two);
-
-    assert.equal(lb.topScores[0][0], this.name_one);
-    assert.equal(lb.topScores[1][0], this.name_three);
-    assert.equal(lb.topScores[2][0], this.name_two);
+    assert.equal(this.lb.topScores[0][0], this.name_one);
+    assert.equal(this.lb.topScores[1][0], this.name_three);
+    assert.equal(this.lb.topScores[2][0], this.name_two);
   });
 
-  it("returns top x scores", function() {
+  it("returns top 5 scores", function() {
+    this.lb.addScore(this.name_three, this.score_three);
+    this.lb.addScore(this.name_one, this.score_one);
+    this.lb.addScore(this.name_two, this.score_two);
+    this.lb.addScore(this.name_three, this.score_three);
+    this.lb.addScore(this.name_one, this.score_one);
 
-
-
+    assert.equal(this.lb.topScores.length, 5);
   });
+
+  it("knows a score is in the top x", function() {
+    this.lb.addScore(this.name_three, this.score_three);
+    this.lb.addScore(this.name_one, this.score_one);
+    this.lb.addScore(this.name_two, this.score_two);
+    this.lb.addScore(this.name_three, this.score_three);
+    this.lb.addScore(this.name_one, this.score_one);    
+
+    this.score_one.points = 51;
+    assert(this.lb.isTopScore(this.score_one));
+  });
+
+  it("knows any score is a top one for a short list", function() {
+    assert.equal(this.score_one.points, 50);
+    assert.equal(this.score_two.points, 25);
+    assert.equal(this.score_three.points, 35);
+
+    this.lb.addScore('a', this.score_one);
+    this.lb.addScore('b', this.score_three);
+
+    assert(this.lb.isTopScore(this.score_two));
+  });
+
 
 
 
