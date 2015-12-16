@@ -3,18 +3,12 @@ const assert = chai.assert;
 
 const NextMove = require('../lib/next-move.js');
 const Board = require('../lib/board.js');
+const utils = require('../lib/utils.js');
 
 describe('NextMove', function() {
   before(function() {
     this.nextMove = new NextMove();
   });
-
-  function arraysAreEqual(a, b) {
-    for(var i = 0; i < a.length; i++){
-      if(a[i] !== b[i]) return false;
-    }
-    return true;
-  }
 
   it("knows upper left light on board", function() {
     var level = {
@@ -31,7 +25,7 @@ describe('NextMove', function() {
     var result = this.nextMove.upperLeftLit(board.lightGrid);
 
     assert(board.lightGrid[0][0].lit);
-    assert(arraysAreEqual(expected, result));
+    assert(utils.arraysAreEqual(expected, result));
   });
 
   it("knows different upper left light", function() {
@@ -49,7 +43,7 @@ describe('NextMove', function() {
     var result = this.nextMove.upperLeftLit(board.lightGrid);
 
     assert(board.lightGrid[1][0].lit);
-    assert(arraysAreEqual(expected, result));
+    assert(utils.arraysAreEqual(expected, result));
   });
 
 
@@ -66,7 +60,7 @@ describe('NextMove', function() {
 
     var expected = [0, 1];
     var result = this.nextMove.upperLeftLit(board.lightGrid);
-    assert(arraysAreEqual(expected, result));
+    assert(utils.arraysAreEqual(expected, result));
   });
 
   it("knows for single light on top row", function(){
@@ -78,7 +72,7 @@ describe('NextMove', function() {
       "4" : "00000"
     };
     var board = new Board(level);
-    assert(arraysAreEqual([1,1], this.nextMove.forBoard(board)));
+    assert(utils.arraysAreEqual([1,1], this.nextMove.forBoard(board)));
   });
 
 
@@ -93,7 +87,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([2,1], result));// this.nextMove.forBoard(board)));
+    assert(utils.arraysAreEqual([2,1], result));// this.nextMove.forBoard(board)));
   });
 
   it("knows for another board for above last row", function() {
@@ -107,7 +101,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([0,3], result));
+    assert(utils.arraysAreEqual([0,3], result));
   });
 
   it("knows first move for end game for 10001", function() {
@@ -122,7 +116,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([0,0], result));
+    assert(utils.arraysAreEqual([0,0], result));
   });
 
   it("knows second move for end game for 10001", function() {
@@ -136,7 +130,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([1,0], result));
+    assert(utils.arraysAreEqual([1,0], result));
   });
 
   it("knows first move for end game for 01010", function() {
@@ -151,7 +145,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([0,0], result));
+    assert(utils.arraysAreEqual([0,0], result));
   });
 
   it("knows second move for end game for 01010", function() {
@@ -165,7 +159,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([3,0], result));
+    assert(utils.arraysAreEqual([3,0], result));
   });
 
   it("knows move for end game for 11100", function() {
@@ -179,7 +173,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([1,0], result));
+    assert(utils.arraysAreEqual([1,0], result));
   });
 
   it("knows move for end game for 00111", function() {
@@ -193,7 +187,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([3,0], result));
+    assert(utils.arraysAreEqual([3,0], result));
   });
 
   it("knows move for end game for 10110", function() {
@@ -207,7 +201,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([4,0], result));
+    assert(utils.arraysAreEqual([4,0], result));
   });
 
   it("knows move for end game for 01101", function() {
@@ -221,7 +215,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([0,0], result));
+    assert(utils.arraysAreEqual([0,0], result));
   });
 
   it("knows move for end game for 11011", function() {
@@ -235,7 +229,7 @@ describe('NextMove', function() {
     var board = new Board(level);
     var result = this.nextMove.forBoard(board);
 
-    assert(arraysAreEqual([2,0], result));
+    assert(utils.arraysAreEqual([2,0], result));
   });
 
 });
