@@ -62,17 +62,25 @@ describe('Creating a new board', () => {
   });
 
   it("dumps to json", function() {
-    var level = {
-        "0" : "01000",
-        "1" : "01000",
-        "2" : "00100",
-        "3" : "00010",
-        "4" : "00001"
-    };
     var levels = new Levels();
     var board = new Board(levels.list[0]);
 
     assert(levels.areEqual(board.toJSON(), levels.list[0]),
       "Levels should be equal");
+  });
+
+  it("dumps another to json", function() {
+    var level = {
+        "0" : "01001",
+        "1" : "01000",
+        "2" : "00100",
+        "3" : "00110",
+        "4" : "10101"
+    };
+
+    var levels = new Levels();
+    var board = new Board(level);
+
+    assert(levels.areEqual(board.toJSON(), level));
   });
 });
