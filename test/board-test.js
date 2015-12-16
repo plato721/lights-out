@@ -61,7 +61,7 @@ describe('Creating a new board', () => {
       assert(board.equals(board_2));
   });
 
-  it.skip("dumps to json", function() {
+  it("dumps to json", function() {
     var level = {
         "0" : "01000",
         "1" : "01000",
@@ -72,5 +72,7 @@ describe('Creating a new board', () => {
     var levels = new Levels();
     var board = new Board(levels.list[0]);
 
+    assert(levels.areEqual(board.toJSON(), levels.list[0]),
+      "Levels should be equal");
   });
 });
