@@ -7,3 +7,5 @@ require('./messages-test.js');
 require('./next-move-test.js');
 require('./neighbor-coords-test.js');
 require('./relative-coords-test.js');
+require('./leaderboard-test.js');
+
