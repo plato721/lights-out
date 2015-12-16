@@ -2,17 +2,11 @@ const chai = require('chai');
 const assert = chai.assert;
 const _ = require('lodash');
 
-var Board = require('../lib/board.js');
-var Light = require('../lib/light.js');
-var Levels = require('../lib/levels.js');
+var Board = require('../lib/board');
+var Light = require('../lib/light');
+var Levels = require('../lib/levels');
 
 describe('Creating a new board', () => {
-  function arraysAreEqual(a, b) {
-    for(var i = 0; i < a.length; i++){
-      if(a[i] !== b[i]) return false;
-    }
-    return true;
-  }
 
   it("has a set width", () => {
     let board = new Board();
