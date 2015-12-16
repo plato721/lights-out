@@ -5,6 +5,5 @@ require('./levels-test.js');
 require('./score-test.js');
 require('./messages-test.js');
 require('./next-move-test.js');
-require('./end-pattern-test.js');
 require('./neighbor-coords-test.js');
 require('./relative-coords-test.js');
