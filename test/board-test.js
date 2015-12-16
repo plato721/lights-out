@@ -60,4 +60,17 @@ describe('Creating a new board', () => {
       var board_2 = new Board(level);
       assert(board.equals(board_2));
   });
+
+  it.skip("dumps to json", function() {
+    var level = {
+        "0" : "01000",
+        "1" : "01000",
+        "2" : "00100",
+        "3" : "00010",
+        "4" : "00001"
+    };
+    var levels = new Levels();
+    var board = new Board(levels.list[0]);
+
+  });
 });
