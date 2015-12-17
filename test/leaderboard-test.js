@@ -3,7 +3,6 @@ const assert = chai.assert;
 
 var Leaderboard = require('../lib/leaderboard');
 var Score = require('../lib/score');
-var utils = require('../lib/utils');
 
 describe('leaderboard', function() {
   beforeEach(function() {
@@ -47,7 +46,7 @@ describe('leaderboard', function() {
     this.lb.addScore(this.name_one, this.score_one);
     this.lb.addScore(this.name_two, this.score_two);
     this.lb.addScore(this.name_three, this.score_three);
-    this.lb.addScore(this.name_one, this.score_one);    
+    this.lb.addScore(this.name_one, this.score_one);
 
     this.score_one.points = 51;
     assert(this.lb.isTopScore(this.score_one));
