@@ -383,9 +383,9 @@
 	var DisplayMessages = __webpack_require__(19);
 	var Levels = __webpack_require__(9);
 	var Score = __webpack_require__(21);
-	var Hint = __webpack_require__(24);
-	var LeaderboardManager = __webpack_require__(26);
+	var LeaderboardManager = __webpack_require__(24);
 	var DisplayLeaderboard = __webpack_require__(20);
+	var Hinter = __webpack_require__(26);
 
 	function Game() {
 	  this.levelIndex = 0;
@@ -396,6 +396,7 @@
 	  this.instructions();
 	  this.initBoard();
 	  this.bindEvents();
+	  this.hinter = new Hinter(this);
 	}
 
 	Game.prototype.bindEvents = function () {
@@ -412,78 +413,14 @@
 	  });
 
 	  $('.hint').on('click', function () {
-	    self.showHint(self.board);
+	    self.hinter.showHint(self.board);
 	  });
 	};
 
-	Game.prototype.processMove = function () {
-	  this.score.incrementMoves();
-	  this.displayMessage.showScore(this.score.points);
-	  this.clearHint();
-	  if (this.gameIsWon()) {
-	    this.processWin();
-	  }
-	  if (this.gameIsLost()) {
-	    this.processLoss();
-	  }
-	};
-
-	Game.prototype.gameIsLost = function () {
-	  return this.score.points <= 0;
-	};
-
-	Game.prototype.processLoss = function () {
-	  this.displayMessage.showLossMessage();
-	  this.initBoard();
-	};
-
-	Game.prototype.processWin = function () {
-	  var leaderboard = this.leaderboard;
-	  var isHighscore = this.leaderboard.isTopScore(this.score);
-	  this.displayGameWon(isHighscore, leaderboard);
-	  this.incrementLevelIndex();
-	  this.initBoard();
-	};
-
-	Game.prototype.getHint = function (board) {
-	  var genHint = new Hint();
-	  return genHint.forBoard(board);
-	};
-
-	Game.prototype.showHint = function (board) {
-	  var nextMove = this.getHint(board);
-	  this.score.cheat();
-	  if (this.gameIsLost()) {
-	    this.processLoss();
-	    return;
-	  }
-	  this.hintLight = this.board.lightGrid[nextMove[0]][nextMove[1]];
-	  this.cheated = true;
-	  this.hintLight.flipHinted().rerender();
-	  this.displayMessage.showScore(this.score.points);
-	};
-
-	Game.prototype.clearHint = function () {
-	  if (this.cheated) {
-	    this.hintLight.flipHinted().rerender();
-	    this.cheated = false;
-	  }
-	};
-
-	Game.prototype.getName = function (input, leaderboard) {
-	  leaderboard.addScore(input, this.score);
-	};
-
-	Game.prototype.displayGameWon = function (isHighscore, leaderboard) {
-	  if (isHighscore) {
-	    this.displayMessage.showHighScoreMessage(this, leaderboard);
-	  } else {
-	    this.displayMessage.showWinMessage();
-	  }
-	};
-
-	Game.prototype.gameIsWon = function () {
-	  return this.board.countLights() === 0;
+	Game.prototype.instructions = function () {
+	  $('#instructions').on('click', function () {
+	    $(this).hide();
+	  });
 	};
 
 	Game.prototype.initBoard = function () {
@@ -494,6 +431,52 @@
 	  this.displayMessage.showScore(this.score.points);
 	  this.setMenu();
 	  new DisplayLeaderboard(this.leaderboard);
+	};
+
+	Game.prototype.processMove = function () {
+	  this.score.incrementMoves();
+	  this.displayMessage.showScore(this.score.points);
+	  this.hinter.clearHint();
+	  if (this.gameIsWon()) {
+	    this.processWin();
+	  }
+	  if (this.gameIsLost()) {
+	    this.processLoss();
+	  }
+	};
+
+	Game.prototype.processLoss = function () {
+	  this.displayMessage.showLossMessage();
+	  this.initBoard();
+	};
+
+	Game.prototype.processWin = function () {
+	  var leaderboard = this.leaderboard;
+	  var score = this.score;
+	  var isHighscore = this.leaderboard.isTopScore(score);
+	  this.displayGameWon(isHighscore, leaderboard, score);
+	  this.incrementLevelIndex();
+	  this.initBoard();
+	};
+
+	Game.prototype.displayGameWon = function (isHighscore, leaderboard, score) {
+	  if (isHighscore) {
+	    this.displayMessage.showHighScoreMessage(this, leaderboard, score);
+	  } else {
+	    this.displayMessage.showWinMessage();
+	  }
+	};
+
+	Game.prototype.getName = function (input, leaderboard, score) {
+	  leaderboard.addScore(input, score);
+	};
+
+	Game.prototype.gameIsWon = function () {
+	  return this.board.countLights() === 0;
+	};
+
+	Game.prototype.gameIsLost = function () {
+	  return this.score.points <= 0;
 	};
 
 	Game.prototype.setMenu = function () {
@@ -525,12 +508,6 @@
 	  if (this.levelIndex < this.levelGenerator.list.length - 1) {
 	    this.levelIndex++;
 	  }
-	};
-
-	Game.prototype.instructions = function () {
-	  $('#instructions').on('click', function () {
-	    $(this).hide();
-	  });
 	};
 
 	module.exports = Game;
@@ -10191,12 +10168,12 @@
 	  });
 	};
 
-	DisplayMessage.prototype.showHighScoreMessage = function (game, leaderboard) {
+	DisplayMessage.prototype.showHighScoreMessage = function (game, leaderboard, score) {
 	  var div = this.element;
 	  this.showBoardMessage(templates.highScoreWin);
 	  div.unbind('click').on('click', 'button', function () {
 	    var input = $('.input').val();
-	    game.getName(input, leaderboard);
+	    game.getName(input, leaderboard, score);
 	    if (leaderboard.name === 'Level Random') {
 	      new DisplayLeaderboard(leaderboard);
 	    }
@@ -10304,7 +10281,7 @@
 	  },
 
 	  connectWithDots: function connectWithDots(a, b) {
-	    var totalLength = 40;
+	    var totalLength = 35;
 	    var dotLength = totalLength - a.length - b.length;
 	    var dots = "";
 	    for (var i = 0; i < dotLength; i++) {
@@ -10340,45 +10317,136 @@
 
 	'use strict';
 
-	var Levels = __webpack_require__(9);
-	var patternList = __webpack_require__(25);
-	var relativeCoords = __webpack_require__(18);
+	var Leaderboard = __webpack_require__(25);
 
-	function NextMove() {}
+	function LeaderboardManager(levels) {
+	  this.levels = levels;
+	  this.list = [];
+	  this.initList();
+	}
 
-	NextMove.prototype.endPattern = function (board) {
-	  var levels = new Levels();
-	  for (var i = 0; i < patternList().length; i++) {
-	    var compare = board.toJSON();
-	    if (levels.areEqual(patternList()[i][0], compare)) {
-	      return patternList()[i][1];
-	    }
+	LeaderboardManager.prototype.initList = function () {
+	  var levelNames = this.levels.labelList();
+	  for (var i = 0; i < levelNames.length; i++) {
+	    this.list.push(new Leaderboard(levelNames[i]));
 	  }
-	  return false;
 	};
 
-	NextMove.prototype.upperLeftLit = function (lightGrid) {
-	  for (var j = 0; j < lightGrid.length; j++) {
-	    for (var i = 0; i < lightGrid.length; i++) {
-	      if (lightGrid[i][j].lit) {
-	        return [i, j];
+	module.exports = LeaderboardManager;
+
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	function Leaderboard(name) {
+	  this.keep = 5;
+	  this.topScores = [];
+	  this.name = name || "";
+	}
+
+	Leaderboard.prototype.isTopScore = function (score) {
+	  if (this.topScores.length < this.keep) {
+	    return true;
+	  }
+	  var threshold = this.topScores.reverse()[0][1];
+	  return score.points > threshold;
+	};
+
+	Leaderboard.prototype.addScore = function (name, score) {
+	  this.topScores.push([name, score.points]);
+	  this.topScores.sort(function (first, second) {
+	    return second[1] - first[1];
+	  });
+	  this.pruneList();
+	};
+
+	Leaderboard.prototype.pruneList = function () {
+	  this.topScores = this.topScores.slice(0, this.keep);
+	};
+
+	module.exports = Leaderboard;
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var move = __webpack_require__(27);
+
+	function Hint(game) {
+	  this.game = game;
+	  this.hintLit = false;
+	  this.hintLight;
+	};
+
+	Hint.prototype.showHint = function (board) {
+	  var nextMove = move.forBoard(this.game.board);
+	  this.game.score.cheat();
+	  if (this.game.gameIsLost()) {
+	    this.game.processLoss();
+	    return;
+	  }
+	  this.hintLight = this.game.board.lightGrid[nextMove[0]][nextMove[1]];
+	  this.hintLit = true;
+	  this.hintLight.flipHinted().rerender();
+	  this.game.displayMessage.showScore(this.game.score.points);
+	};
+
+	Hint.prototype.clearHint = function () {
+	  if (this.hintLit) {
+	    this.hintLight.flipHinted().rerender();
+	    this.hintLit = false;
+	  }
+	};
+
+	module.exports = Hint;
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Levels = __webpack_require__(9);
+	var patternList = __webpack_require__(28);
+	var relativeCoords = __webpack_require__(18);
+
+	module.exports = {
+	  forBoard: function forBoard(board) {
+	    var patternedMove = this.endPattern(board);
+	    if (patternedMove) {
+	      return patternedMove;
+	    }
+	    return relativeCoords.below(this.upperLeftLit(board.lightGrid));
+	  },
+
+	  endPattern: function endPattern(board) {
+	    var levels = new Levels();
+	    for (var i = 0; i < patternList().length; i++) {
+	      var compare = board.toJSON();
+	      if (levels.areEqual(patternList()[i][0], compare)) {
+	        return patternList()[i][1];
+	      }
+	    }
+	    return false;
+	  },
+
+	  upperLeftLit: function upperLeftLit(lightGrid) {
+	    for (var j = 0; j < lightGrid.length; j++) {
+	      for (var i = 0; i < lightGrid.length; i++) {
+	        if (lightGrid[i][j].lit) {
+	          return [i, j];
+	        }
 	      }
 	    }
 	  }
 	};
 
-	NextMove.prototype.forBoard = function (board) {
-	  var patternedMove = this.endPattern(board);
-	  if (patternedMove) {
-	    return patternedMove;
-	  }
-	  return relativeCoords.below(this.upperLeftLit(board.lightGrid));
-	};
-
-	module.exports = NextMove;
-
 /***/ },
-/* 25 */
+/* 28 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10422,63 +10490,6 @@
 	    "3": "00000",
 	    "4": "11011" }, [2, 0]]];
 	};
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var Leaderboard = __webpack_require__(27);
-
-	function LeaderboardManager(levels) {
-	  this.levels = levels;
-	  this.list = [];
-	  this.initList();
-	}
-
-	LeaderboardManager.prototype.initList = function () {
-	  var levelNames = this.levels.labelList();
-	  for (var i = 0; i < levelNames.length; i++) {
-	    this.list.push(new Leaderboard(levelNames[i]));
-	  }
-	};
-
-	module.exports = LeaderboardManager;
-
-/***/ },
-/* 27 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	function Leaderboard(name) {
-	  this.keep = 5;
-	  this.topScores = [];
-	  this.name = name || "";
-	}
-
-	Leaderboard.prototype.isTopScore = function (score) {
-	  if (this.topScores.length < this.keep) {
-	    return true;
-	  }
-	  var threshold = this.topScores.reverse()[0][1];
-	  return score.points > threshold;
-	};
-
-	Leaderboard.prototype.addScore = function (name, score) {
-	  this.topScores.push([name, score.points]);
-	  this.topScores.sort(function (first, second) {
-	    return second[1] - first[1];
-	  });
-	  this.pruneList();
-	};
-
-	Leaderboard.prototype.pruneList = function () {
-	  this.topScores = this.topScores.slice(0, this.keep);
-	};
-
-	module.exports = Leaderboard;
 
 /***/ }
 /******/ ]);
