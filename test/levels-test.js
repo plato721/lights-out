@@ -1,7 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
 
-var Game = require('../lib/game.js');
 var Levels = require('../lib/levels.js');
 
 describe('Levels', function() {
@@ -37,7 +36,7 @@ describe('Levels', function() {
     console.log(random);
 
     for(var i = 0; i < 5; i++) {
-      assert.match(random[parseInt(i)], /[01]{5}/)
+      assert.match(random[parseInt(i)], /[01]{5}/);
     }
   });
 
