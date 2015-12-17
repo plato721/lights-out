@@ -30,16 +30,6 @@ describe('Levels', function() {
     }
   });
 
-  it('generates a random level', function() {
-    var levels = new Levels();
-    var random = levels.random();
-    console.log(random);
-
-    for(var i = 0; i < 5; i++) {
-      assert.match(random[parseInt(i)], /[01]{5}/);
-    }
-  });
-
   it('can check for equality of levels', function() {
     var levels = new Levels();
     var level = levels.list[0];
