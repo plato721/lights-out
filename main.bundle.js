@@ -382,14 +382,13 @@
 	var $ = __webpack_require__(7);
 	var DisplayMessages = __webpack_require__(19);
 	var Levels = __webpack_require__(9);
-	var Score = __webpack_require__(20);
-	var Hint = __webpack_require__(21);
-	var LeaderboardManager = __webpack_require__(23);
-	var DisplayLeaderboard = __webpack_require__(25);
+	var Score = __webpack_require__(21);
+	var Hint = __webpack_require__(24);
+	var LeaderboardManager = __webpack_require__(26);
+	var DisplayLeaderboard = __webpack_require__(20);
 
 	function Game() {
 	  this.levelIndex = 0;
-
 	  this.levelGenerator = new Levels();
 	  this.leaderboardRepo = new LeaderboardManager(this.levelGenerator);
 	  this.score = new Score();
@@ -424,6 +423,18 @@
 	  if (this.gameIsWon()) {
 	    this.processWin();
 	  }
+	  if (this.gameIsLost()) {
+	    this.processLoss();
+	  }
+	};
+
+	Game.prototype.gameIsLost = function () {
+	  return this.score.points <= 0;
+	};
+
+	Game.prototype.processLoss = function () {
+	  this.displayMessage.showLossMessage();
+	  this.initBoard();
 	};
 
 	Game.prototype.processWin = function () {
@@ -441,10 +452,14 @@
 
 	Game.prototype.showHint = function (board) {
 	  var nextMove = this.getHint(board);
+	  this.score.cheat();
+	  if (this.gameIsLost()) {
+	    this.processLoss();
+	    return;
+	  }
 	  this.hintLight = this.board.lightGrid[nextMove[0]][nextMove[1]];
 	  this.cheated = true;
 	  this.hintLight.flipHinted().rerender();
-	  this.score.cheat();
 	  this.displayMessage.showScore(this.score.points);
 	};
 
@@ -572,11 +587,7 @@
 	};
 
 	Board.prototype.getLit = function (x, y) {
-	  if (this.jsonLitStatus(x, y) === "1") {
-	    return true;
-	  } else {
-	    return false;
-	  }
+	  return this.jsonLitStatus(x, y) === "1" ? true : false;
 	};
 
 	Board.prototype.initLightGrid = function () {
@@ -9882,11 +9893,7 @@
 	}
 
 	Light.prototype.isLitJSON = function () {
-	  if (this.lit) {
-	    return 1;
-	  } else {
-	    return 0;
-	  }
+	  return this.lit ? 1 : 0;
 	};
 
 	Light.prototype.render = function () {
@@ -10155,25 +10162,44 @@
 
 	'use strict';
 
+	var DisplayLeaderboard = __webpack_require__(20);
+	var templates = __webpack_require__(23);
 	var $ = __webpack_require__(7);
 
-	function DisplayMessage() {}
+	function DisplayMessage() {
+	  this.element = $('#post-game');
+	}
+
+	DisplayMessage.prototype.showBoardMessage = function (template) {
+	  var div = this.element;
+	  div.empty().show().append(template);
+	};
 
 	DisplayMessage.prototype.showWinMessage = function () {
-	  var div = $('#post-game');
-	  div.empty().show().append('<h1>You Win!</h1>\n              <p>Click to play the next level.</p>');
+	  var div = this.element;
+	  this.showBoardMessage(templates.basicWin);
+	  div.on('click', function () {
+	    div.hide();
+	  });
+	};
 
+	DisplayMessage.prototype.showLossMessage = function () {
+	  var div = this.element;
+	  this.showBoardMessage(templates.gameOver);
 	  div.on('click', function () {
 	    div.hide();
 	  });
 	};
 
 	DisplayMessage.prototype.showHighScoreMessage = function (game, leaderboard) {
-	  var div = $('#post-game');
-	  div.empty().show().append('<h1>High Score!</h1>\n              <p>Name:</p>\n              <input class=\'input\'></input>\n              <button id="high-submit-button">Submit</button>');
+	  var div = this.element;
+	  this.showBoardMessage(templates.highScoreWin);
 	  div.unbind('click').on('click', 'button', function () {
 	    var input = $('.input').val();
 	    game.getName(input, leaderboard);
+	    if (leaderboard.name === 'Level Random') {
+	      new DisplayLeaderboard(leaderboard);
+	    }
 	    div.hide();
 	  });
 	};
@@ -10190,6 +10216,53 @@
 
 /***/ },
 /* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var $ = __webpack_require__(7);
+	var Score = __webpack_require__(21);
+	var utils = __webpack_require__(22);
+
+	function DisplayLeaderboard(leaderboard) {
+	  this.leaderboard = leaderboard;
+	  this.attachPoint = $('.leaderboard');
+	  this.title = leaderboard.name;
+	  this.showLeaderBoard();
+	}
+
+	DisplayLeaderboard.prototype.render = function () {
+	  this.element = $(this.template());
+	  this.attachRows();
+	  return this;
+	};
+
+	DisplayLeaderboard.prototype.attachRows = function () {
+	  for (var i = 0; i < this.leaderboard.topScores.length; i++) {
+	    this.element.append(this.rowElement(i, this.leaderboard.topScores[i][0], this.leaderboard.topScores[i][1]));
+	  }
+	};
+
+	DisplayLeaderboard.prototype.rowElement = function (value, name, score) {
+	  return $(this.rowTemplate(value, name, score));
+	};
+
+	DisplayLeaderboard.prototype.rowTemplate = function (value, name, score) {
+	  return '<li class="leader" value="' + value + '">' + utils.connectWithDots(name, score.toString()) + '</li>';
+	};
+
+	DisplayLeaderboard.prototype.template = function () {
+	  return '<ul class="leaders-list"><u>Leaderboard - ' + this.title + '</u></ul>';
+	};
+
+	DisplayLeaderboard.prototype.showLeaderBoard = function () {
+	  this.render().attachPoint.empty().append(this.element);
+	};
+
+	module.exports = DisplayLeaderboard;
+
+/***/ },
+/* 21 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10215,13 +10288,60 @@
 	module.exports = Score;
 
 /***/ },
-/* 21 */
+/* 22 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {
+	  arraysAreEqual: function arraysAreEqual(a, b) {
+	    for (var i = 0; i < a.length; i++) {
+	      if (a[i] !== b[i]) {
+	        return false;
+	      }
+	    }
+	    return true;
+	  },
+
+	  connectWithDots: function connectWithDots(a, b) {
+	    var totalLength = 40;
+	    var dotLength = totalLength - a.length - b.length;
+	    var dots = "";
+	    for (var i = 0; i < dotLength; i++) {
+	      dots = dots.concat('.');
+	    }
+	    return a + dots + b;
+	  }
+	};
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {
+	  basicWin: function basicWin() {
+	    return "<h1>You Win!</h1>\n            <p>Click to play the next level.</p>";
+	  },
+
+	  highScoreWin: function highScoreWin() {
+	    return "<h1>High Score!</h1>\n            <p>Name:</p>\n            <input class='input'></input>\n            <button id=\"high-submit-button\">Submit</button>";
+	  },
+
+	  gameOver: function gameOver() {
+	    return "<h1>Game Over!</h1>\n        <p>Click to try again.</p>";
+	  }
+	};
+
+/***/ },
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Levels = __webpack_require__(9);
-	var patternList = __webpack_require__(22);
+	var patternList = __webpack_require__(25);
 	var relativeCoords = __webpack_require__(18);
 
 	function NextMove() {}
@@ -10258,7 +10378,7 @@
 	module.exports = NextMove;
 
 /***/ },
-/* 22 */
+/* 25 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10304,12 +10424,12 @@
 	};
 
 /***/ },
-/* 23 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Leaderboard = __webpack_require__(24);
+	var Leaderboard = __webpack_require__(27);
 
 	function LeaderboardManager(levels) {
 	  this.levels = levels;
@@ -10327,7 +10447,7 @@
 	module.exports = LeaderboardManager;
 
 /***/ },
-/* 24 */
+/* 27 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10359,55 +10479,6 @@
 	};
 
 	module.exports = Leaderboard;
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var $ = __webpack_require__(7);
-	var Score = __webpack_require__(20);
-
-	function DisplayLeaderboard(leaderboard) {
-	  this.leaderboard = leaderboard;
-	  this.attachPoint = $('.leaderboard');
-	  this.title = leaderboard.name;
-
-	  this.mockScore = new Score();
-	  this.mockScore.points = 500;
-	  this.showLeaderBoard();
-	}
-
-	DisplayLeaderboard.prototype.render = function () {
-	  this.element = $(this.template());
-	  this.attachRows();
-	  return this;
-	};
-
-	DisplayLeaderboard.prototype.attachRows = function () {
-	  for (var i = 0; i < this.leaderboard.topScores.length; i++) {
-	    this.element.append(this.rowElement(i, this.leaderboard.topScores[i][0], this.leaderboard.topScores[i][1]));
-	  }
-	};
-
-	DisplayLeaderboard.prototype.rowElement = function (value, name, score) {
-	  return $(this.rowTemplate(value, name, score));
-	};
-
-	DisplayLeaderboard.prototype.rowTemplate = function (value, name, score) {
-	  return '<li class="leader" value="' + value + '">' + name + "..........." + score + '</li>';
-	};
-
-	DisplayLeaderboard.prototype.template = function () {
-	  return '<ul class="leaders-list"><u>Leaderboard - ' + this.title + '</u></ul>';
-	};
-
-	DisplayLeaderboard.prototype.showLeaderBoard = function () {
-	  this.render().attachPoint.empty().append(this.element);
-	};
-
-	module.exports = DisplayLeaderboard;
 
 /***/ }
 /******/ ]);
