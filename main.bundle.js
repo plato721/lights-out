@@ -380,12 +380,12 @@
 
 	var Board = __webpack_require__(6);
 	var $ = __webpack_require__(7);
-	var DisplayMessages = __webpack_require__(18);
+	var DisplayMessages = __webpack_require__(19);
 	var Levels = __webpack_require__(9);
-	var Score = __webpack_require__(19);
-	var Hint = __webpack_require__(20);
-	var LeaderboardManager = __webpack_require__(22);
-	var DisplayLeaderboard = __webpack_require__(24);
+	var Score = __webpack_require__(20);
+	var Hint = __webpack_require__(21);
+	var LeaderboardManager = __webpack_require__(23);
+	var DisplayLeaderboard = __webpack_require__(25);
 
 	function Game() {
 	  this.levelIndex = 0;
@@ -529,7 +529,8 @@
 	var $ = __webpack_require__(7);
 	var Light = __webpack_require__(8);
 	var Levels = __webpack_require__(9);
-	var neighborCoords = __webpack_require__(16);
+	var neighborCoords = __webpack_require__(17);
+	var coords = __webpack_require__(18);
 
 	function Board(level) {
 	  this.width = 5;
@@ -545,7 +546,24 @@
 	};
 
 	Board.prototype.randomLevel = function () {
-	  return this.levelsGenerator.random();
+	  var board = new Board(this.levelsGenerator.blankLevel);
+	  var clicks = Math.floor(Math.random() * 98) + 2;
+	  board = this.randomClickIterations(board, clicks);
+	  return board.toJSON();
+	};
+
+	Board.prototype.randomClickIterations = function (board, clicks) {
+	  for (var i = 0; i < clicks; i++) {
+	    var light = this.randomLight(board);
+	    light.flipSwitch();
+	    board.updateNeighbors(light);
+	  }
+	  return board;
+	};
+
+	Board.prototype.randomLight = function (board) {
+	  var randomCoords = coords.random();
+	  return board.lightGrid[randomCoords[0]][randomCoords[1]];
 	};
 
 	Board.prototype.jsonLitStatus = function (x, y) {
@@ -9929,13 +9947,15 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var levels = __webpack_require__(10);
+	var Board = __webpack_require__(6);
 
 	function Levels() {
 	  this.list = [];
 	  this.initList();
+	  this.blankLevel = levels["levelBlank"];
 	}
 
 	Levels.prototype.labelList = function () {
@@ -9944,14 +9964,6 @@
 
 	Levels.prototype.initList = function () {
 	  this.list = [levels["level1"], levels["level2"], levels["level3"], levels["level4"], levels["level5"]];
-	};
-
-	Levels.prototype.random = function () {
-	  var level = {};
-	  for (var i = 0; i < 5; i++) {
-	    level[i] = this.randomRow();
-	  }
-	  return level;
 	};
 
 	Levels.prototype.randomRow = function () {
@@ -9988,6 +10000,7 @@
 	exports.level3 = __webpack_require__(13);
 	exports.level4 = __webpack_require__(14);
 	exports.level5 = __webpack_require__(15);
+	exports.levelBlank = __webpack_require__(16);
 
 /***/ },
 /* 11 */
@@ -10054,13 +10067,26 @@
 
 /***/ },
 /* 16 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  "0" : "00000",
+	  "1" : "00000",
+	  "2" : "00000",
+	  "3" : "00000",
+	  "4" : "00000"
+	};
+
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = function (x, y, board) {
 	  var width = board.width;
-	  var relativeCoords = __webpack_require__(17);
+	  var relativeCoords = __webpack_require__(18);
 
 	  return rawNeighborCoords(x, y).filter(function (coords) {
 	    return onBoard(coords[0], coords[1]);
@@ -10092,7 +10118,7 @@
 	};
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10112,11 +10138,19 @@
 
 	  left: function left(coords) {
 	    return [coords[0] - 1, coords[1]];
+	  },
+
+	  random: function random() {
+	    return [this.singleRandom(), this.singleRandom()];
+	  },
+
+	  singleRandom: function singleRandom() {
+	    return Math.floor(Math.random() * 5);
 	  }
 	};
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10155,7 +10189,7 @@
 	module.exports = DisplayMessage;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10181,14 +10215,14 @@
 	module.exports = Score;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var Levels = __webpack_require__(9);
-	var patternList = __webpack_require__(21);
-	var relativeCoords = __webpack_require__(17);
+	var patternList = __webpack_require__(22);
+	var relativeCoords = __webpack_require__(18);
 
 	function NextMove() {}
 
@@ -10224,7 +10258,7 @@
 	module.exports = NextMove;
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10270,12 +10304,12 @@
 	};
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Leaderboard = __webpack_require__(23);
+	var Leaderboard = __webpack_require__(24);
 
 	function LeaderboardManager(levels) {
 	  this.levels = levels;
@@ -10293,7 +10327,7 @@
 	module.exports = LeaderboardManager;
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10327,13 +10361,13 @@
 	module.exports = Leaderboard;
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var $ = __webpack_require__(7);
-	var Score = __webpack_require__(19);
+	var Score = __webpack_require__(20);
 
 	function DisplayLeaderboard(leaderboard) {
 	  this.leaderboard = leaderboard;
