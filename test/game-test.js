@@ -38,4 +38,8 @@ describe("Game", function() {
     assert(this.game.levelIndex === 1);
   });
 
+  it("has a board", function() {
+    assert(this.game.board);
+  });
+
 });
